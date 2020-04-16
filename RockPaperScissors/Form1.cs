@@ -45,53 +45,9 @@ namespace RockPaperScissors
             //set player choice
             playerChoice = "rock";
 
-            //determine and set cpu choice. display cpu image
-            int randValue = randGen.Next(1, 4);
+            computerTurn();
 
-            if (randValue == 1)
-            {
-                cpuChoice = "rock";
-                g.DrawImage(rockImage, 360, 70, 168, 280);
-            }
-            else if (randValue == 2)
-            {
-                cpuChoice = "paper";
-                g.DrawImage(paperImage, 360, 70, 168, 280);
-            }
-            else
-            {
-                cpuChoice = "scissors";
-                g.DrawImage(scissorImage, 360, 70, 168, 280);
-            }
-
-            //play sound and display player choice image
-            jabPlayer.Play();
-            g.DrawImage(rockImage, 168, 70, 168, 280);
-            Thread.Sleep(1000);
-
-            //determine who the winner is and display result
-            if (playerChoice == cpuChoice)
-            {
-                g.DrawImage(tieImage, 225, 5, 250, 150);
-                ties++;
-                tiesLabel.Text = "Ties: " + ties;
-            }
-            else if (cpuChoice == "paper")
-            {
-                g.DrawImage(loseImage, 225, 5, 250, 150);
-                losses++;
-                lossesLabel.Text = "Losses: " + losses;
-            }
-            else
-            {
-                g.DrawImage(winImage, 225, 5, 250, 150);
-                wins++;
-                winsLabel.Text = "Wins: " + wins;
-            }
-
-            gongPlayer.Play();
-            Thread.Sleep(3000);
-            Refresh();
+            determineWinner();
         }
 
         private void paperButton_Click(object sender, EventArgs e)
@@ -99,53 +55,9 @@ namespace RockPaperScissors
             //set player choice
             playerChoice = "paper";
 
-            //determine and set cpu choice. display cpu image
-            int randValue = randGen.Next(1, 4);
+            computerTurn(); 
 
-            if (randValue == 1)
-            {
-                cpuChoice = "rock";
-                g.DrawImage(rockImage, 360, 70, 168, 280);
-            }
-            else if (randValue == 2)
-            {
-                cpuChoice = "paper";
-                g.DrawImage(paperImage, 360, 70, 168, 280);
-            }
-            else
-            {
-                cpuChoice = "scissors";
-                g.DrawImage(scissorImage, 360, 70, 168, 280);
-            }
-
-            //play sound and display player choice image
-            g.DrawImage(paperImage, 168, 70, 168, 280);
-            jabPlayer.Play();
-            Thread.Sleep(1000);
-
-            //determine who the winner is and display result
-            if (playerChoice == cpuChoice)
-            {
-                g.DrawImage(tieImage, 225, 5, 250, 150);
-                ties++;
-                tiesLabel.Text = "Ties: " + ties;
-            }
-            else if (cpuChoice == "scissors")
-            {
-                g.DrawImage(loseImage, 225, 5, 250, 150);
-                losses++;
-                lossesLabel.Text = "Losses: " + losses;
-            }
-            else
-            {
-                g.DrawImage(winImage, 225, 5, 250, 150);
-                wins++;
-                winsLabel.Text = "Wins: " + wins;
-            }
-
-            gongPlayer.Play();
-            Thread.Sleep(3000);
-            Refresh();
+            determineWinner();
         }
 
         private void scissorsButton_Click(object sender, EventArgs e)
@@ -153,6 +65,13 @@ namespace RockPaperScissors
             //set player choice
             playerChoice = "scissors";
 
+            computerTurn();
+
+            determineWinner();
+        }
+
+        public void computerTurn()
+        {
             //determine and set cpu choice. display cpu image
             int randValue = randGen.Next(1, 4);
 
@@ -171,10 +90,15 @@ namespace RockPaperScissors
                 cpuChoice = "scissors";
                 g.DrawImage(scissorImage, 360, 70, 168, 280);
             }
+        }
 
+        public void determineWinner()
+        {
             //play sound and display player choice image
+            if (playerChoice == "scissors") { g.DrawImage(scissorImage, 168, 70, 168, 280); }
+            else if (playerChoice == "rock") { g.DrawImage(rockImage, 168, 70, 168, 280); }
+            else  { g.DrawImage(paperImage, 168, 70, 168, 280); }
             jabPlayer.Play();
-            g.DrawImage(scissorImage, 168, 70, 168, 280);
             Thread.Sleep(1000);
 
             //determine who the winner is and display result
@@ -184,7 +108,7 @@ namespace RockPaperScissors
                 ties++;
                 tiesLabel.Text = "Ties: " + ties;
             }
-            else if (cpuChoice == "rock")
+            else if (playerChoice == "rock" && cpuChoice == "paper" || playerChoice == "scissors" && cpuChoice == "rock" || playerChoice == "paper" && cpuChoice == "scissors")
             {
                 g.DrawImage(loseImage, 225, 5, 250, 150);
                 losses++;
